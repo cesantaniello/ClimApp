@@ -55,6 +55,8 @@ function consultarAPI(ciudad, pais) {
         })
         .then(datos => {
 
+            console.log(datos);
+
             limpiarHTML(); //Limpiar HTML previo
 
             if(datos.cod === "404"){
@@ -68,16 +70,34 @@ function consultarAPI(ciudad, pais) {
 }
 
 function mostrarClima(datos) {
-    const { main: {temp, temp_min, temp_max}} = datos;
+    const { name, main: {temp, temp_min, temp_max}} = datos;
+
     const centigrados = kelvinACentigrados(temp);
+    const min = kelvinACentigrados(temp_min);
+    const max = kelvinACentigrados(temp_max);
+
+    const nombreCiudad = document.createElement('p');
+    nombreCiudad.innerHTML = `Clima en: ${name}`;
+    nombreCiudad.classList.add('font-bold', 'text-2xl')
 
     const actual = document.createElement('p');
     actual.innerHTML = `${centigrados}° C`;
     actual.classList.add('text-6xl', 'text-center', 'font-bold', 'mb-4');
 
+    const tempMinima = document.createElement('p');
+    tempMinima.innerHTML = `MIN: ${min}° C`;
+    tempMinima.classList.add('text-2xl', 'text-center', 'font-bold', 'mb-4');
+
+    const tempMaxima = document.createElement('p');
+    tempMaxima.innerHTML = `MAX: ${max}° C`;
+    tempMaxima.classList.add('text-2xl', 'text-center', 'font-bold', 'mb-4');
+
     const resultadoDiv = document.createElement('div');
     resultadoDiv.classList.add('text-center', 'text-white');
+    resultadoDiv.appendChild(nombreCiudad);
     resultadoDiv.appendChild(actual);
+    resultadoDiv.appendChild(tempMinima);
+    resultadoDiv.appendChild(tempMaxima);
 
     resultado.appendChild(resultadoDiv);
 }
